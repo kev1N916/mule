@@ -6,6 +6,8 @@ import (
 	"github.com/go-git/go-git/v5"
 )
 
+// used to track changes to files
+
 type Status struct {
 	HasChanges    bool     `json:"hasChanges"`
 	ChangedFiles  []string `json:"changedFiles"`

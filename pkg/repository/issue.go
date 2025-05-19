@@ -7,6 +7,8 @@ import (
 	"github.com/mule-ai/mule/pkg/remote/types"
 )
 
+// all the functions to handle issues 
+
 type Issue struct {
 	ID           int            `json:"id"`
 	Number       int            `json:"number"`

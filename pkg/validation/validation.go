@@ -6,6 +6,8 @@ import (
 	"github.com/go-logr/logr"
 )
 
+// Understood 
+
 var discard = logr.Discard()
 
 type ValidationInput struct {

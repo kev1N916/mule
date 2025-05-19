@@ -14,6 +14,7 @@ type Provider struct {
 	repo   string
 }
 
+// creates a new github client so we can communicate with it's apis
 func NewProvider(path, token string) *Provider {
 	parts := strings.Split(path, "/")
 	var owner, repo string

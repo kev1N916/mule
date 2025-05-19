@@ -36,6 +36,8 @@ type RemoteProviders struct {
 	Local  remote.Provider
 }
 
+
+// Initializes the state of the app with default settings 
 func NewState(logger logr.Logger, settings settings.Settings) *AppState {
 	rag := rag.NewStore(logger.WithName("rag"))
 	genaiProviders := initializeGenAIProviders(logger, settings)

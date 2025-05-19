@@ -12,6 +12,64 @@ import (
 	"github.com/mule-ai/mule/pkg/remote/types"
 )
 
+// Here's a breakdown of its key components and functions:
+
+// LocalPageData struct: This struct defines the structure of data that will likely be used to render a
+// web page related to a local repository. It includes information about the Repository,
+// lists of Issues and PullRequests, the current Page identifier ("local"), and the application Settings.
+
+// HandleLocalProviderPage: This handler retrieves information (issues and pull requests) for a 
+// specific local repository identified by a path query parameter. It fetches the repository from
+// the application's state, retrieves the relevant data using the repository's Remote interface, 
+// and then likely renders an HTML template ("layout.html") with the gathered LocalPageData.
+
+// HandleCreateLocalIssue: This handler processes requests to create a new issue in a local repository. 
+// It expects a JSON request body containing the path of the repository, the issue title, and body. It retrieves the repository, 
+// uses the repo.Remote.CreateIssue method to create the issue, and returns the new issue number.
+
+// HandleAddLocalComment: This handler adds a comment to either an issue or a pull request in a local repository. 
+// It takes a JSON request body with the repository path, the resourceId (issue or PR number), 
+// resourceType ("issue" or "pr"), the comment body, and an optional diffHunk. 
+// It calls the appropriate repo.Remote.CreateIssueComment or repo.Remote.CreatePRComment method.
+
+// HandleAddLocalReaction: This handler adds a reaction to a comment on a local repository resource. 
+// It expects a JSON body with the repository path, the commentId, and the reaction type. 
+// It uses repo.Remote.AddCommentReaction to perform the action.
+
+// HandleGetLocalDiff: This handler retrieves the diff for a specific pull request in a local repository. 
+// It requires path and prNumber as query parameters, fetches the diff using repo.Remote.FetchDiffs, 
+// and returns the diff as plain text.
+
+// HandleAddLocalLabel: This handler adds a label to an issue in a local repository. 
+// It takes a JSON body with the repository path, issueNumber, and the label to add, 
+// using repo.Remote.AddLabelToIssue.
+
+// HandleUpdateLocalIssueState: This handler updates the state (open or closed) of an issue in a local repository. 
+// It expects a JSON body with the repository path, issueNumber, and the desired state, 
+// calling repo.Remote.UpdateIssueState. It includes validation for the state value.
+
+// HandleUpdateLocalPullRequestState: This handler updates the state of a pull request in a local repository. 
+// It takes a JSON body with the repository path, prNumber, and the target state, 
+// using repo.Remote.UpdatePullRequestState.
+
+// HandleDeleteLocalIssue: This handler deletes an issue from a local repository, 
+// requiring the repository path and issueNumber in a JSON request body and calling repo.Remote.DeleteIssue.
+
+// HandleDeleteLocalPullRequest: This handler deletes a pull request from a local repository, 
+// taking the repository path and prNumber in a JSON body and using repo.Remote.DeletePullRequest.
+
+// getRepository (Helper Function): Although not explicitly shown in the provided snippet, 
+// the repeated use of getRepository(req.Path) suggests there's a helper function 
+// (likely within this package or a related internal package) that standardizes the process of retrieving a 
+// repository from the global state.State.Repositories map based on its absolute path, 
+// handling potential errors like the repository not being found. 
+// It also appears to handle locking the repository's mutex before performing operations.
+
+// In summary, this package provides a set of HTTP endpoints that allow interacting with issues, 
+// pull requests, comments, reactions, and labels within local repositories managed by the mule-ai/mule application,
+// acting as a bridge between HTTP requests and the underlying "local" remote provider implementation.
+
+
 type LocalPageData struct {
 	Repository   interface{}
 	Issues       []types.Issue

@@ -8,6 +8,9 @@ import (
 	"github.com/mule-ai/mule/internal/state"
 )
 
+// Understood
+//  Used to obtain all the models which are currently availible to us 
+
 func HandleModels(w http.ResponseWriter, r *http.Request) {
 	providerName := r.URL.Query().Get("provider")
 	if providerName == "" {

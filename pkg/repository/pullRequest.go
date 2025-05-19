@@ -7,6 +7,8 @@ import (
 	"github.com/mule-ai/mule/pkg/remote/types"
 )
 
+// package provides conversion between structs
+
 type PullRequest struct {
 	Number          int        `json:"number"`
 	Title           string     `json:"title"`

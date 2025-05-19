@@ -8,6 +8,8 @@ import (
 	"github.com/jbutlerdev/genai/tools"
 	"github.com/mule-ai/mule/pkg/validation"
 )
+// Used to check if all the tools mentioned on the codebase are valid and
+// we have all the tools mentioned
 
 var templates *template.Template
 

@@ -15,6 +15,90 @@ import (
 	"github.com/mule-ai/mule/pkg/log"
 )
 
+/*
+This package implements an HTTP handler for viewing and filtering logs in a web interface. Let me break it down comprehensively:
+Core Purpose
+The package provides a web-based log viewer that:
+
+Reads log entries from a JSON-formatted log file
+Groups logs by conversation ID
+Allows filtering by search terms and log levels
+Presents logs in a user-friendly web interface or as JSON for AJAX requests
+
+Key Components
+Data Structures
+
+LogEntry
+Represents a single log entry with fields like level, timestamp, message, content, model, error, etc.
+Maps directly to the JSON structure in the log file
+Includes a computed Time field derived from the timestamp
+
+Conversation
+Groups related log entries by their conversation ID
+Tracks metadata like start time, message count, and status
+Status is determined by the level of the most recent message
+
+LogsData
+Container for rendering the template with conversation data
+Includes page identification and the list of conversations
+
+Main Handler Function: HandleLogs
+This function processes HTTP requests to view logs and:
+
+Handles Query Parameters
+search: Text to search for in log messages
+level: Filter by log level (error, info, etc.)
+limit: Number of conversations to display (defaults to 10)
+
+Detects Request Type
+Determines if it's an AJAX request or direct browser request
+Returns JSON for AJAX, HTML for direct browser access
+
+Processes Log Files
+Opens and reads the log file specified in log.LogFile
+Handles potentially very large lines with a 1MB limit
+Parses each line as JSON into a LogEntry
+
+Applies Security Measures
+Uses html.EscapeString() to prevent XSS attacks by escaping HTML characters
+
+Organizes Data
+Groups entries by conversation ID
+Sorts messages chronologically within each conversation
+Sorts conversations by start time (newest first)
+
+Applies Filters
+Filters logs by level if specified
+Filters logs by search term if specified
+
+Returns Results
+For AJAX: Returns JSON data
+For direct browser requests: Renders the "layout.html" template with log data
+
+Notable Features
+
+Efficient Reading
+Handles large log files by reading line by line
+Can process partial lines for extremely long entries
+
+Content Protection
+Truncates extremely large content fields
+Escapes HTML in all user-visible fields
+
+Flexible Output
+Supports both HTML and JSON output formats
+Enables both direct viewing and programmatic access
+
+Pagination and Filtering
+Limits results to a configurable number
+Supports text search and log level filtering
+
+Integration Points
+Uses the log package from the same project to access the log file location
+Renders results using a template system (referenced but not defined in this code)
+Designed to work as part of a web application with AJAX capabilities
+*/
+
 type LogEntry struct {
 	Level     string  `json:"level"`
 	TimeStamp float64 `json:"ts"`

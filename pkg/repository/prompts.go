@@ -2,6 +2,8 @@ package repository
 
 import "fmt"
 
+// Basic prompts which are necessary
+
 func CommitPrompt(changes string) string {
 	return fmt.Sprintf("Generate a concise commit message for the following changes\n"+
 		"no placeholders, explanation, or other text should be provided\n"+

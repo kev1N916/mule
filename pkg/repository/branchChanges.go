@@ -10,6 +10,8 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
+// Just used to find changes between branches
+
 type BranchChanges struct {
 	Files   []string
 	Commits []*object.Commit

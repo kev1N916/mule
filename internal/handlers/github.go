@@ -10,6 +10,23 @@ import (
 	"github.com/mule-ai/mule/pkg/repository"
 )
 
+/*
+This Go package, handlers, appears to be responsible for handling HTTP requests related to GitHub data
+within the mule-ai/mule application. It provides two main handler functions:
+
+HandleGitHubRepositories: This function handles requests to fetch a list of GitHub repositories. 
+It interacts with a remote.GitHub object (likely a client for the GitHub API stored in the application's state)
+to retrieve the repositories and then encodes the result as a JSON response.
+
+HandleGitHubIssues: This function handles requests to fetch issues for a specific GitHub repository. 
+It requires a path query parameter in the request URL to identify the local path of the repository. 
+It then looks up the repository in the application's state, checks for a configured GitHub token, 
+updates the issues for that repository using the repo.UpdateIssues() method, and finally encodes the 
+fetched issues as a JSON response.
+
+*/
+// Uses the github apis to get information
+
 func HandleGitHubRepositories(w http.ResponseWriter, r *http.Request) {
 	state.State.Mu.RLock()
 	remote := state.State.Remote

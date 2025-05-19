@@ -2,6 +2,8 @@ package validation
 
 import "os/exec"
 
+// Understood 
+
 type ValidationFunc func(string) (string, error)
 
 var functions = map[string]ValidationFunc{

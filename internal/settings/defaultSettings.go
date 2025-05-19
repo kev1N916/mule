@@ -6,6 +6,8 @@ import (
 	"github.com/mule-ai/mule/pkg/integration/matrix"
 )
 
+// Understood 
+
 var DefaultSettings = Settings{
 	GitHubToken: "",
 	AIProviders: []AIProviderSettings{

@@ -8,6 +8,9 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
+// wraps over repository to handle changes to branches
+
+
 func (r *Repository) CreateBranch(branchName string) error {
 	repo, err := git.PlainOpen(r.Path)
 	if err != nil {

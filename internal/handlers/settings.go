@@ -13,6 +13,88 @@ import (
 	"github.com/mule-ai/mule/pkg/agent"
 )
 
+// Understood
+
+// Core Purpose
+// The package provides RESTful API endpoints that:
+
+// Retrieve and update application settings
+// Fetch template values for agent prompts
+// Provide metadata about workflow input/output fields
+// Connect the web interface with the application's state management
+
+// Key Components
+// HTTP Handler Functions
+
+// HandleGetSettings
+// Responds to GET requests for retrieving current application settings
+// Returns the current settings as JSON from the application state
+// Uses read-only locking to ensure thread safety
+
+
+// HandleUpdateSettings
+// Processes POST requests to update application settings
+// Decodes JSON from the request body into a settings struct
+// Calls handleSettingsChange to apply and persist the changes
+
+
+// handleSettingsChange (internal helper)
+// Updates the settings in the application state
+// Triggers updates to agents and workflows
+// Persists the changes to a configuration file
+
+
+// HandleTemplateValues
+// Returns available prompt template values for agents
+// Provides metadata for template construction in the UI
+
+// HandleWorkflowOutputFields
+// Returns a list of available output fields for workflow steps
+// These are standardized fields that can be passed between workflow steps
+
+// HandleWorkflowInputMappings
+// Returns a list of ways to map outputs from previous steps to inputs
+// Defines how data flows between workflow components
+
+
+// Important Data Elements
+
+// Workflow Output Fields
+// generatedText: Raw text output from an agent
+// extractedCode: Code extracted from generated text
+// summary: Content summary
+// actionItems: Extracted action items
+// suggestedChanges: Code change suggestions
+// reviewComments: Code review comments
+// testCases: Generated test cases
+// documentationText: Generated documentation
+
+
+// Workflow Input Mappings
+// useAsPrompt: Use output directly as prompt
+// appendToPrompt: Append output to existing prompt
+// useAsContext: Use output as context information
+// useAsInstructions: Use output as agent instructions
+// useAsCodeInput: Use output as code to process
+// useAsReviewTarget: Use output as review target
+
+// Integration and Dependencies
+// State Management: Uses state.State for accessing and mutating application state
+// Settings: Works with the settings package for structure definitions
+// Configuration: Uses config package to persist settings to disk
+// Agent System: Interacts with the agent package for template values
+
+// System Architecture Insights
+// Based on this code, we can infer:
+
+// Concurrent Design: The application uses mutex locks for thread safety, indicating it's designed for concurrent use
+// Agent-Based Architecture: The system appears to use an agent-based approach with configurable prompts and workflows
+// Workflow Orchestration: The system supports complex workflows where outputs from one step can be mapped as inputs to another step
+// AI Integration: Fields like "generatedText" and the overall structure suggest this is part of an AI application, likely using language models
+// Configuration Management: The application maintains persistent settings in the user's home directory
+
+
+// returns the current settings
 func HandleGetSettings(w http.ResponseWriter, r *http.Request) {
 	state.State.Mu.RLock()
 	defer state.State.Mu.RUnlock()
@@ -39,6 +121,7 @@ func HandleUpdateSettings(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+// Used to change the settings of agents and workflows using the agents
 func handleSettingsChange(newSettings settings.Settings) error {
 	state.State.Mu.Lock()
 	state.State.Settings = newSettings
@@ -77,8 +160,8 @@ func HandleWorkflowOutputFields(w http.ResponseWriter, r *http.Request) {
 	// These are the fields that can be used as outputs from one agent to another
 	outputFields := []string{
 		"generatedText",     // The raw generated text from an agent
-		"extractedCode",     // Code extracted from the generated text
-		"summary",           // A summary of the generated content
+		"extractedCode",     //Code extracted from the generated text
+		"summary",           // A summary of the generated content 
 		"actionItems",       // Action items extracted from the content
 		"suggestedChanges",  // Suggested code changes
 		"reviewComments",    // Code review comments

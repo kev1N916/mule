@@ -61,6 +61,7 @@ type AggregatedResults struct {
 	Results map[string][]chromem.Result
 }
 
+// creates a new store which has chromem as a in-memory DB
 func NewStore(logger logr.Logger) *Store {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -88,6 +89,7 @@ func (s *Store) NewCollection(name string) error {
 	return nil
 }
 
+// creates a new collection in the database for a repo
 func (s *Store) AddRepository(path string) error {
 	collection, ok := s.Collections[path]
 	if !ok {
@@ -110,7 +112,7 @@ func (s *Store) AddRepository(path string) error {
 		}
 		s.watchedFiles[file] = true
 	}
-
+	// chunks files and adds their embeddings to the collection
 	return s.addDocumentsToCollection(s.ctx, collection, files)
 }
 

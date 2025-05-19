@@ -8,6 +8,13 @@ import (
 	"github.com/mule-ai/mule/pkg/remote/types"
 )
 
+/*
+Here is a brief explanation of each function:
+
+WorkspaceComments: Retrieves comments and their associated reactions for a given GitHub pull request.
+WorkspacePullRequestCommentReactions: Fetches just the reactions for a specific comment ID on a GitHub pull request.
+AddCommentReaction: Adds a particular reaction (like "+1" or "heart") to a specified comment on GitHub.
+*/
 func (p *Provider) FetchComments(owner, repo string, prNumber int) ([]*types.Comment, error) {
 	opt := &github.PullRequestListCommentsOptions{
 		ListOptions: github.ListOptions{

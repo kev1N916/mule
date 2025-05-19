@@ -13,6 +13,8 @@ import (
 	"github.com/mule-ai/mule/pkg/repository"
 )
 
+// Understood 
+
 const ConfigPath = ".config/mule/config.json"
 
 type Config struct {

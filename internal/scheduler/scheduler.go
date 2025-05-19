@@ -7,6 +7,8 @@ import (
 	"github.com/robfig/cron/v3"
 )
 
+// Understood 
+
 type Task struct {
 	ID       cron.EntryID
 	Schedule string

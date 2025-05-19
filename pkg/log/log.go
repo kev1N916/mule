@@ -6,6 +6,8 @@ import (
 	"go.uber.org/zap"
 )
 
+// zap->Blazing fast, structured, leveled logging in Go.
+
 const LogFile = "mule.log"
 
 func New(file string) logr.Logger {

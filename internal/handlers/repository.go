@@ -17,6 +17,55 @@ import (
 	"github.com/mule-ai/mule/pkg/repository"
 )
 
+
+/**
+Here's a breakdown of its key components and functions:
+
+RepoAddRequest struct: This struct defines the expected format for the JSON request body 
+when adding a new repository. It includes the RepoURL, the BasePath where the repository 
+should be located, and a Schedule for periodic synchronization.
+
+HandleListRepositories: This handler responds to requests by returning a JSON representation of all 
+repositories currently tracked in the application's state.State.Repositories. 
+It uses a read lock on the state for safe concurrent access.
+
+HandleAddRepository: This handler processes requests to add a new repository to the application. 
+It takes a RepoAddRequest as input, determines the local path for the repository, 
+creates a repository.Repository object, validates that the path is a valid Git repository using go-git, 
+updates the repository's status, adds a scheduled task for syncing the repository using the application's Scheduler, and saves the updated configuration.
+
+HandleUpdateRepository: This handler triggers an update (fetch) for a specific repository identified by its 
+path in the JSON request body. It retrieves the repository, performs a Git fetch operation, 
+updates the repository's status, and returns the updated repository state as JSON.
+
+HandleCloneRepository: This handler handles requests to clone a new repository from a remote URL. 
+It expects a JSON body with the RepoURL and BasePath. 
+It creates the base directory if it doesn't exist and then uses the 
+repo.Upsert method (which likely handles cloning if the directory is empty or updating if it already exists) 
+to obtain the repository.
+
+HandleDeleteRepository: This handler removes a repository from the application's tracking. 
+It takes the repository path as a URL query parameter, retrieves the repository, 
+removes it from state.State.Repositories, cancels its scheduled sync task, and saves the updated configuration.
+
+HandleSyncRepository: This handler manually triggers a synchronization process for a specific repository 
+identified by its path query parameter. It retrieves the repository and calls the repo.Sync method, 
+which likely involves fetching updates and potentially running workflows.
+
+HandleSwitchProvider: This handler allows changing the remote provider associated with a repository. 
+It takes a JSON body with the repository path and the new provider name. 
+It updates the repository's RemoteProvider settings, creates a new remote.Remote instance based on the 
+updated settings, and saves the configuration.
+
+getRepository (Helper Function): This internal helper function standardizes the process of retrieving a 
+repository.Repository object from state.State.Repositories based on a provided path. 
+It converts the path to an absolute path and handles the case where the repository is not found, 
+returning an error.
+
+updateRepo (Helper Function): This internal helper function updates the status of a given repository using 
+repo.UpdateStatus and then saves the updated repository object back into state.State.Repositories.
+
+**/
 type RepoAddRequest struct {
 	RepoURL  string `json:"repoUrl"`
 	BasePath string `json:"path"`
